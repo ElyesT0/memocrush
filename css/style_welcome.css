@@ -1,0 +1,81 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+  margin: 0;
+}
+
+.container {
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+h2,
+h3 {
+  font-size: 1.5em;
+}
+
+.experimenters {
+  margin: 20px 0;
+}
+
+.experimenters p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.btn {
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #45a049;
+}
+
+.textLeft {
+  text-align: left;
+}
+
+#goToTraining {
+  background-color: goldenrod;
+}
+
+/* Labels (titles) of the questions */
+label {
+  font-weight: bold; /* Make labels bold */
+  text-align: left; /* Align labels to the left */
+  display: block; /* Ensure label takes up full width */
+  margin-bottom: 8px; /* Add some space between the label and dropdown */
+}
+
+/* Dropdowns */
+select {
+  width: 100%; /* Make dropdown take full width */
+  padding: 10px; /* Add padding for better appearance */
+  margin-bottom: 20px; /* Space between each dropdown */
+  border-radius: 5px; /* Rounded corners */
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: 90%;
+    padding: 10px;
+  }
+}

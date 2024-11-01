@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VVIQ</title>
+    <link rel="stylesheet" href="css/end_survey.css" />
+  </head>
+  <body>
+    <div class="survey-container">
+      <h2>Visual Imagery Questionnaire</h2>
+      <form id="surveyForm"></form>
+      <button type="submit" class="submit-btn" onclick="submitSurvey()">
+        Submit
+      </button>
+    </div>
+    <!-- Modal for Thank You Message -->
+    <div id="thankYouModal" class="modal-overlay">
+      <div class="modal-content">
+        <h2 id="thankYouMessage"></h2>
+      </div>
+    </div>
+
+    <script src="scripts/end_survey.js"></script>
+    <script src="scripts/send_post.js"></script>
+  </body>
+</html>
