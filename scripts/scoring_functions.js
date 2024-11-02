@@ -281,15 +281,19 @@ function select_feedbackTxt(token_err_bool, score_update, dl_distance_tmp) {
 
 function visual_feedback() {
   let visual_feedback_class;
-  if (dl_distance < 3) {
-    // CASE: Success
-    visual_feedback_class = 'success';
-  } else if (dl_distance < correct_threshold) {
-    // CASE: Moderate success
-    visual_feedback_class = 'moderate--failure';
-  } else {
-    // CASE: Fail
+  if (tokenErr) {
     visual_feedback_class = 'fail';
+  } else {
+    if (dl_distance < 3) {
+      // CASE: Success
+      visual_feedback_class = 'success';
+    } else if (dl_distance < correct_threshold) {
+      // CASE: Moderate success
+      visual_feedback_class = 'moderate--failure';
+    } else {
+      // CASE: Fail
+      visual_feedback_class = 'fail';
+    }
   }
 
   bodyElement.classList.add(visual_feedback_class);
