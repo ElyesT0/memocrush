@@ -5,11 +5,7 @@ const saveParticipantData = (
   initial_participantID,
   participantData_loc
 ) => {
-  if (debbug) {
-    var participantID_loc = `TEST-${initial_participantID}`;
-  } else {
-    var participantID_loc = initial_participantID;
-  }
+  var participantID_loc = initial_participantID;
   console.log('sending data');
   console.log('sent object POST : ', {
     experiment_name: experiment_name_loc,

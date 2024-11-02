@@ -73,7 +73,7 @@ const questions_eng = [
   'You are near the entrance. The color, shape, and details of the door.',
   'You enter the shop and go to the counter. The counter assistant serves you. Money changes hands.',
   'The contours of the landscape',
-  'THe color and shape of the trees.',
+  'The color and shape of the trees.',
   'The color and shape of the lake.',
   'A strong wind blows on the trees and on the lake, causing waves.',
 ];
@@ -194,7 +194,7 @@ function submitSurvey() {
   // Changes the ID to ID_withSurvey
   let current_id = participant_data['participant_id'][0];
   let new_id = current_id + '_surveyComplete';
-  
+
   // Send data
   saveParticipantData(experiment_name, new_id, participant_data);
 }
