@@ -55,7 +55,7 @@ const response_phase_elements = [
   'txt_score',
 ]; // Elements that needs to be displayed during the response phase.
 const minimum_input_required = 3; // number of intput required to submit answer
-const correct_threshold = 6; // Defined DL-distance threshold to have a positive addition to the score
+const correct_threshold = 5; // Defined DL-distance threshold to have a positive addition to the score
 /* 
 ============================================================
 +++++++++++++++++++ Experimental Variables +++++++++++++++++

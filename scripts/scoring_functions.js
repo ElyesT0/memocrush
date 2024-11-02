@@ -287,7 +287,7 @@ function visual_feedback() {
     if (dl_distance < 3) {
       // CASE: Success
       visual_feedback_class = 'success';
-    } else if (dl_distance < correct_threshold) {
+    } else if (dl_distance < correct_threshold + 3) {
       // CASE: Moderate success
       visual_feedback_class = 'moderate--failure';
     } else {
