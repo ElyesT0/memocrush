@@ -280,7 +280,6 @@ function log_answers() {
   participantData.participant_distance_dl.push(dl_distance);
   participantData.participant_TokenErr.push(tokenErr);
   participantData.participant_zoom_level.push(getZoomLevel());
-  participantData.participant_TokenErr.push(tokenErr);
 
   if (counter_presentation == 0) {
     fill_participant_obj(1);
