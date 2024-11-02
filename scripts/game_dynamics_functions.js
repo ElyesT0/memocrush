@@ -133,7 +133,7 @@ function response(input) {
   // EventListener that will be attached to each CIRCLES
   //
   interclick = compute_interclick();
-  if (interclick < 300) {
+  if (interclick < 150) {
     return;
   }
 
