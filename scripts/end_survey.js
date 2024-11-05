@@ -93,6 +93,21 @@ const questions_exp_eng = [
   'I used my fingers or body as a memory support',
 ];
 
+// ----- Questions expérience auditive interne
+const questions_auditory_fr = [
+  "J'ai souvent du mal à reconnaître ou à me souvenir des mélodies.",
+  'Je peux facilement distinguer différents instruments de musique ou voix.',
+  "J'ai déjà eu l'impression de 'voir' la musique dans mon esprit, même lorsqu'aucune musique extérieure ne joue.",
+  "Il m'arrive de ressentir que je n'ai pas de voix intérieure qui parle dans ma tête.",
+];
+
+const questions_auditory_eng = [
+  'I often struggle to recognize or remember melodies.',
+  'I can easily distinguish between different musical instruments or voices.',
+  "I have often felt like I am 'hearing' music in my mind, even when no external music is playing.",
+  "I sometimes feel like I don't have an inner voice that speaks in my mind.",
+];
+
 const option_exp_fr = [
   "Pas du tout d'accord",
   "Pas d'accord",
@@ -116,6 +131,7 @@ const instructions_eng = [
   "Visualize a rising sun. Consider carefully the picture that comes before your mind's eye. Then rate the following items:",
   "Think of the front of a shop to which you often go. Consider carefully the picture that comes before your mind's eye. Then rate the following items:",
   "Finally, think of a country scene which involves trees, mountains and a lake. Consider carefully the picture that comes before your mind's eye. Then rate the following items:",
+  'To end the questionnaire, please rate these items about your internal auditory experience.',
 ];
 
 const instructions_fr = [
@@ -124,6 +140,7 @@ const instructions_fr = [
   "Imaginez le lever du soleil. Analysez attentivement l'image qui apparaît.",
   "Imaginez un magasin dans lequel vous allez souvent. Analysez en détail l'image qui vous vient à l'esprit.",
   "Imaginez une scène de campagne avec des arbres, des montagnes, un lac. Analysez, en détail, les images que vous viennent à l'esprit.",
+  'Pour clôturer ce questionnaire, veuillez juger les items suivant sur votre expérience auditive interne.',
 ];
 // ------ Language selection
 
@@ -133,12 +150,14 @@ if (lan_selected == 'fr') {
   var options_vviq = options_vviq_fr;
   var questions_strategy = questions_exp_fr;
   var options_exp = option_exp_fr;
+  var questions_auditory = questions_auditory_fr;
 } else {
   var questions_survey = questions_eng;
   var instructions = instructions_eng;
   var options_vviq = options_vviq_eng;
   var questions_strategy = questions_exp_eng;
   var options_exp = option_exp_eng;
+  var questions_auditory = questions_auditory_eng;
 }
 
 // ----- Combine Questions
@@ -165,7 +184,13 @@ const exp_questions = questions_strategy.map((question) => ({
   options: options_exp,
 }));
 
-const questions = exp_questions.concat(vviq_questions);
+// Add questions about internal auditory processes
+const auditory_questions = questions_auditory.map((question) => ({
+  question,
+  options: options_exp,
+}));
+
+const questions = exp_questions.concat(vviq_questions, auditory_questions);
 
 //--------------------
 function loadQuestions() {
