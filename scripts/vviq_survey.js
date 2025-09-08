@@ -3,19 +3,8 @@
 var lan_selected = sessionStorage.getItem("language-selected") || "en";
 var experiment_name = sessionStorage.getItem("experiment_name");
 let right_dimension_questions = {};
-
-// -- Retrieve Participant Data
-let participant_data = sessionStorage.getItem("participant_object");
-if (participant_data) {
-  // Parse the JSON string back into an object
-  participant_data = JSON.parse(participant_data);
-} else {
-  console.log("No data found in sessionStorage.");
-}
-
-// -- Modify the participant's ID to modify the name of the JSON file (avoid erasing data if there's an issue when reloading the page)
-let participantID = "";
-
+const submit_btn = document.querySelector(".submit-btn");
+const vviqResults = {};
 /* 
 ==========================================
 +++++++++++++++ Survey Code ++++++++++++++
@@ -169,45 +158,27 @@ function loadQuestions() {
 ++++++++++++++ Collect data ++++++++++++++
 ==========================================
 */
-function submitSurvey() {
-  const responses = {};
 
-  for (let index = 0; index < vviq_questions.length; index++) {
-    const answer = document.querySelector(`input[name="q${index}"]:checked`);
+/*
+  Save answers to the questionnaire in the session storage.
+*/
+function save_vviq() {
+  for (let i = 0; i < vviq_questions.length; i++) {
+    const answer = document.querySelector(`input[name="q${i}"]:checked`);
+
     if (!answer) {
       alert("Please answer all questions.");
       return;
     }
-    responses[`question${index + 1}`] = parseInt(answer.value, 10); // Store numeric value
+
+    vviqResults[`VVIQ${i + 1}`] = Number(answer.value);
   }
-
-  console.log(responses);
-
-  document.getElementById("thankYouMessage").textContent =
-    lan_selected === "fr"
-      ? "Réponses enregistrées. Merci pour votre participation!"
-      : "Your responses have been recorded. Thank you for completing the survey!";
-
-  document.getElementById("thankYouModal").style.display = "flex"; // Show modal
-  document.getElementById("surveyForm").style.display = "none";
-  document.querySelector(".submit-btn").style.display = "none";
-
-  // Put the Responses to the right dimensions
-  let my_key = "participant_id";
-  let given_dim_participantData = participant_data[my_key].length;
-  for (let [key, val] of Object.entries(responses)) {
-    right_dimension_questions[key] = Array(given_dim_participantData).fill(val);
-  }
-
-  // Merge Objects
-  Object.assign(participant_data, right_dimension_questions);
-
-  // Changes the ID to ID_withSurvey
-  let current_id = participant_data["participant_id"][0];
-  let new_id = current_id + "_surveyComplete";
-
-  // Send data
-  saveParticipantData(experiment_name, new_id, participant_data);
+  // ✅ if loop completes, all questions are answered
+  console.log("Saving data");
+  sessionStorage.setItem("vviqResults", JSON.stringify(vviqResults));
+  window.location.href = "main.html";
 }
+
+submit_btn.addEventListener("touchend", () => save_vviq());
 
 window.onload = loadQuestions;

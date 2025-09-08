@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
 const init = function (element_selectors) {
   fill_participant_obj(0);
 
   // [OK BUTTON] -- Make the OK button skip through instructions
-  element_selectors['btn_ok'].addEventListener(keyEvent, () => {
+  element_selectors["btn_ok"].addEventListener(keyEvent, () => {
     if (txt_counter < instruction_training_end.length) {
       element_selectors.txt_container.innerHTML =
         instruction_training_end[txt_counter];
@@ -16,8 +16,8 @@ const init = function (element_selectors) {
   });
 
   // [CIRCLES] -- Make circles register answers
-  for (let i = 0; i < element_selectors['circles'].length; i++) {
-    element_selectors['circles'][i].addEventListener(keyEvent, () =>
+  for (let i = 0; i < element_selectors["circles"].length; i++) {
+    element_selectors["circles"][i].addEventListener(keyEvent, () =>
       response(i + 1)
     );
   }
@@ -79,9 +79,9 @@ const runTrial = function () {
   } else {
     // 3. CASE: Last trial ended. Shows end screen. Sends data.
     element_selectors.txt_container.innerHTML = end_txt;
-    element_selectors.txt_container.classList.remove('feedback-txt');
-    element_selectors.txt_container.classList.add('final-txt');
-    revealElements(['txt_container'], element_selectors);
+    element_selectors.txt_container.classList.remove("feedback-txt");
+    element_selectors.txt_container.classList.add("final-txt");
+    revealElements(["txt_container"], element_selectors);
     saveParticipantData(
       experiment_name,
       participantData.participant_id[0],
@@ -94,7 +94,7 @@ const runTrial = function () {
 // -------------------------------------------------------------------------------------------
 function presentation(sequence, element_selectors) {
   presentation_time = true;
-  step = 'presentation';
+  step = "presentation";
 
   // Fixation Cross is back to being white
   fixation_blue(false);
@@ -113,7 +113,7 @@ function presentation(sequence, element_selectors) {
 
 // -------------------------------------------------------------------------------------------
 function reproduction_state(response_phase_elements, element_selectors) {
-  if (state == 'training') {
+  if (state == "training") {
     revealElements(response_phase_elements_training, element_selectors);
   } else {
     // RevealElements for the response
@@ -123,7 +123,7 @@ function reproduction_state(response_phase_elements, element_selectors) {
   responsive_circles(true);
   // Set the presentation tracker to FALSE
   presentation_time = false;
-  step = 'response';
+  step = "response";
   // Fixation cross Becomes Blue
   fixation_blue(true);
 }
@@ -174,7 +174,7 @@ function submit_response(confidence) {
 
   confidence_entry = confidence;
   performance =
-    JSON.stringify(answer) === JSON.stringify(original) ? 'success' : 'fail';
+    JSON.stringify(answer) === JSON.stringify(original) ? "success" : "fail";
 
   // Compute and update new score -- function.
   ({ score, dl_distance, tokenErr } = update_score(
@@ -212,13 +212,13 @@ function compute_interclick() {
 */
 
 function display_pageNext(participant_input) {
-  step = 'next';
+  step = "next";
   //display current score
   display_score(true);
   display_instructions(training_feedback_txt);
   clearScreen();
 
-  if (state == 'training') {
+  if (state == "training") {
     // console.log('REVEAL state -- TRAINING');
     revealElements(page_next_elements_training, element_selectors);
   } else {
@@ -231,7 +231,7 @@ function display_pageNext(participant_input) {
 
 function handle_training(counter_presentation, sequence) {
   display_score(false);
-  state = 'training';
+  state = "training";
   // score stays at the same level
   score = initial_score;
   if (counter_presentation == 0) {
@@ -249,8 +249,8 @@ function handle_training(counter_presentation, sequence) {
 }
 
 function handle_testing(counter_presentation, sequence) {
-  state = 'testing';
-  element_selectors.txt_container.classList.add('feedback-txt');
+  state = "testing";
+  element_selectors.txt_container.classList.add("feedback-txt");
 }
 
 // -------------------------------------------------------------------------------------------
@@ -268,7 +268,7 @@ function reset_holders() {
 // -------------------------------------------------------------------------------------------
 
 function log_answers() {
-  console.log('----- Logging Answers -----');
+  console.log("----- Logging Answers -----");
   participantData.participant_response_before.push(response_before);
   participantData.participant_response_after.push(response_after);
   participantData.participant_click_timings.push(click_timings);
@@ -304,21 +304,25 @@ function fill_participant_obj(state_fill) {
     // Update Constants (we need to keep every array at the same length)
     participantData.participant_id = Array(1).fill(participant_id);
 
-    participantData.age = Array(1).fill(surveyResults['age']);
+    for (const [key, value] of Object.entries(vviqResults)) {
+      participantData[key] = Array(1).fill(value);
+    }
 
-    participantData.diplome = Array(1).fill(surveyResults['diplome']);
+    participantData.age = Array(1).fill(surveyResults["age"]);
 
-    participantData.musicExp = Array(1).fill(surveyResults['musicExp']);
+    participantData.diplome = Array(1).fill(surveyResults["diplome"]);
+
+    participantData.musicExp = Array(1).fill(surveyResults["musicExp"]);
 
     participantData.musicScoreReading = Array(1).fill(
-      surveyResults['musicScoreReading']
+      surveyResults["musicScoreReading"]
     );
 
     participantData.instrumentProficiency = Array(1).fill(
-      surveyResults['instrumentProficiency']
+      surveyResults["instrumentProficiency"]
     );
 
-    participantData.mathExp = Array(1).fill(surveyResults['mathExp']);
+    participantData.mathExp = Array(1).fill(surveyResults["mathExp"]);
 
     participantData.participant_language = Array(1).fill(lan_selected);
 
@@ -356,19 +360,23 @@ function fill_participant_obj(state_fill) {
     // Update Constants (we need to keep every array at the same length)
     participantData.participant_id.push(participant_id);
 
-    participantData.age.push(surveyResults['age']);
+    for (const [key, value] of Object.entries(vviqResults)) {
+      participantData[key].push(value);
+    }
 
-    participantData.diplome.push(surveyResults['diplome']);
+    participantData.age.push(surveyResults["age"]);
 
-    participantData.musicExp.push(surveyResults['musicExp']);
+    participantData.diplome.push(surveyResults["diplome"]);
 
-    participantData.musicScoreReading.push(surveyResults['musicScoreReading']);
+    participantData.musicExp.push(surveyResults["musicExp"]);
+
+    participantData.musicScoreReading.push(surveyResults["musicScoreReading"]);
 
     participantData.instrumentProficiency.push(
-      surveyResults['instrumentProficiency']
+      surveyResults["instrumentProficiency"]
     );
 
-    participantData.mathExp.push(surveyResults['mathExp']);
+    participantData.mathExp.push(surveyResults["mathExp"]);
 
     participantData.participant_language.push(lan_selected);
 
@@ -405,25 +413,25 @@ function fill_participant_obj(state_fill) {
     );
   }
 
-  console.log('ParticipantData = ', participantData);
+  console.log("ParticipantData = ", participantData);
 }
 // -------------------------------------------------------------------------------------------
 
 function save_participant_data_browser(obj) {
   // Store the data as a JSON string in sessionStorage
-  sessionStorage.setItem('participant_object', JSON.stringify(obj));
+  sessionStorage.setItem("participant_object", JSON.stringify(obj));
 
   // Set text inside the survey button
-  if (lan_selected == 'fr') {
-    element_selectors.btn_survey.innerHTML = 'Questionnaire';
+  if (lan_selected == "fr") {
+    element_selectors.btn_survey.innerHTML = "Questionnaire";
   } else {
-    element_selectors.btn_survey.innerHTML = 'Survey';
+    element_selectors.btn_survey.innerHTML = "Survey";
   }
   // Make the Go to survey button appear
-  element_selectors.btn_survey.classList.remove('hidden');
+  element_selectors.btn_survey.classList.remove("hidden");
 
   // Add the link to the survey page
   element_selectors.btn_survey.addEventListener(keyEvent, () => {
-    window.location.href = 'end_survey.html';
+    window.location.href = "end_survey.html";
   });
 }
