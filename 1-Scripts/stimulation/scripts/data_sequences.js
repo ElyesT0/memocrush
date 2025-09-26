@@ -147,8 +147,8 @@ const dict_sequences = {
   Suppression: [1, 2, 3, 4, 5, 1, 2, 3, 4, 1, 2, 3], // Suppression (contrôle insertion)
   "Mirror-1": [1, 2, 3, 4, 4, 3, 2, 1, 1, 2, 3, 4], // Miroir 1
   "CMirror-1": [1, 2, 3, 4, 4, 2, 3, 1, 1, 2, 3, 4], // Contrôle Miroir 1
-  "Mirror-2": [1, 2, 3, 4, 3, 2, 1, 4, 1, 2, 3, 4], // Miroir 2
-  "CMirror-2": [1, 2, 3, 4, 3, 1, 2, 4, 1, 2, 3, 4], // Contrôle Miroir 2
+  "Mirror-2": [1, 2, 3, 4, 3, 2, 1, 2, 3, 4, 3, 2, 1], // Miroir 2
+  "CMirror-2": [1, 2, 3, 4, 2, 3, 1, 2, 3, 4, 2, 3, 1], // Contrôle Miroir 2
 };
 
 const sequences = [
