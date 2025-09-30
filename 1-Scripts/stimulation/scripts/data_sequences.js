@@ -303,7 +303,7 @@ const instruction_training_end_eng = [
   "Sequences of dots will be presented to you.",
   "Wait for the fixation cross to become black, then reproduce the sequence.",
   "Please maintain your gaze on the fixation cross at the center of the screen",
-  "Bet on your answers and earn points!",
+  "After entering your answer, choose a bet to earn points!",
   "Choose a bet between 100 and 400 to validate your trial",
 ];
 
