@@ -18,7 +18,7 @@ const init = function (element_selectors) {
   // [CIRCLES] -- Make circles register answers
   for (let i = 0; i < element_selectors["circles"].length; i++) {
     element_selectors["circles"][i].addEventListener(keyEvent, () =>
-      response(i + 1)
+      response(i)
     );
   }
 
@@ -102,7 +102,7 @@ function presentation(sequence, element_selectors) {
 
   for (let i = 0; i < sequence.length; i++) {
     setTimeout(
-      () => activate_point(element_selectors.circles[sequence[i] - 1]),
+      () => activate_point(element_selectors.circles[sequence[i]]),
       SOA * (i + 1)
     );
   }
@@ -345,6 +345,7 @@ function fill_participant_obj(state_fill) {
     participantData.last_click = last_click;
   } else if (state_fill == 1) {
     participantData.sequences_temp_tags = all_sequences_temp_tags.slice(0, 1);
+    participantData.sequences_geom_tags = all_sequences_geom_tags.slice(0, 1);
 
     // Structure: pure temporal
     participantData.sequences_original = original_sequence_train_test.slice(
@@ -392,6 +393,11 @@ function fill_participant_obj(state_fill) {
     participantData.experiment_rangeConfidence.push(range_confidence);
 
     participantData.sequences_temp_tags = all_sequences_temp_tags.slice(
+      0,
+      counter_presentation + 1
+    );
+
+    participantData.sequences_geom_tags = all_sequences_geom_tags.slice(
       0,
       counter_presentation + 1
     );

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /* 
 Here we define the functions used to prepare the experiment. Typically, functions used to randomize the presentation order of the stimuli.
@@ -11,30 +11,13 @@ Here we define the functions used to prepare the experiment. Typically, function
 */
 
 const shuffle_seq = function (seq_original) {
-  // Create a copy of the original array to avoid modifying it
-  let seq = [...seq_original]; // Or you can use seq_original.slice()
+  // Copy to avoid mutating original
+  let seq = [...seq_original];
 
-  // Shuffle the sequences by switching positions in the array several times
-  for (let i = 0; i < seq.length; i++) {
-    let rand_1 = Math.trunc(Math.random() * seq.length);
-    let rand_2 = Math.trunc(Math.random() * seq.length);
-    let temp = seq[rand_1];
-    seq[rand_1] = seq[rand_2];
-    seq[rand_2] = temp;
-  }
-
-  return seq; // Return the shuffled copy
-};
-// -------------------------------------------------------------------------------------------
-const shuffle = function (seq = randomized_sequences) {
-  // purpose: shuffle the sequences by switching positions of the sequences in the array several times
-
-  for (let i = 0; i < seq.length; i++) {
-    let rand_1 = Math.trunc(Math.random() * seq.length);
-    let rand_2 = Math.trunc(Math.random() * seq.length);
-    let temp = seq[rand_1];
-    seq[rand_1] = seq[rand_2];
-    seq[rand_2] = temp;
+  // Fisher–Yates shuffle
+  for (let i = seq.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [seq[i], seq[j]] = [seq[j], seq[i]]; // swap
   }
 
   return seq;
@@ -43,9 +26,9 @@ const shuffle = function (seq = randomized_sequences) {
 // -------------------------------------------------------------------------------------------
 
 const makeId = function () {
-  let participant_ID = '';
+  let participant_ID = "";
   // >purpose: generating a random ID for participant
-  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   for (var i = 0; i < 12; i++) {
     participant_ID += characters.charAt(Math.floor(Math.random() * 36));
   }
@@ -109,31 +92,29 @@ function randomizeStartingPoint(sequence) {
   const randomStart = Math.floor(Math.random() * circleSize);
 
   // Map each value in the sequence to its new position based on the random start point
-  const randomizedSequence = sequence.map((num) => {
-    let new_num = (num + randomStart) % circleSize;
-    if (new_num == 0) return 6;
-    else return new_num;
-  });
+  const randomizedSequence = sequence.map(
+    (num) => (num + randomStart) % circleSize
+  );
 
   return randomizedSequence;
 }
 
 // -------------------------------------------------------------------------------------------
 const default_survey_results = {
-  age: 'noData_test',
-  diplome: 'noData_test',
-  instrumentProficiency: 'noData_test',
-  mathExp: 'noData_test',
-  musicExp: 'noData_test',
-  musicScoreReading: 'noData_test',
+  age: "noData_test",
+  diplome: "noData_test",
+  instrumentProficiency: "noData_test",
+  mathExp: "noData_test",
+  musicExp: "noData_test",
+  musicScoreReading: "noData_test",
 };
 
 // -------------------------------------------------------------------------------------------
 function display_info(counter = counter_presentation) {
-  console.log('counter_presentation : ', counter);
-  console.log('all_sequences_temp_tag : ', all_sequences_temp_tags[counter]);
-  console.log('original expression : ', shuffled_sequences[counter]);
-  console.log('shown expression : ', randomized_sequences[counter]);
+  console.log("counter_presentation : ", counter);
+  console.log("all_sequences_temp_tag : ", all_sequences_temp_tags[counter]);
+  console.log("original expression : ", shuffled_sequences[counter]);
+  console.log("shown expression : ", randomized_sequences[counter]);
 }
 // -------------------------------------------------------------------------------------------
 function getZoomLevel() {

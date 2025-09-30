@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 /* 
 ======================================================
 ++++++++ Scoring and Performance Functions +++++++++++
@@ -21,8 +21,8 @@ function compute_damerau_levenshtein(answer, original_sequence) {
   var j;
   var cost;
   var d = new Array();
-  answer = answer.join('');
-  original_sequence = original_sequence.join('');
+  answer = answer.join("");
+  original_sequence = original_sequence.join("");
 
   if (answer.length == 0) {
     let dist = original_sequence.length;
@@ -139,7 +139,7 @@ function update_score(
   // CASE: Token Error.
   if (tokenErr_tmp) {
     score_update = -100 * bet;
-    playSound = 'neg1';
+    playSound = "neg1";
     positive_streak = 0;
   }
   // CASE: not a token error
@@ -168,7 +168,7 @@ function update_score(
         score_update =
           (-100 * bet) / (original_sequence.length - dl_distance_tmp);
       }
-      playSound = 'neg1';
+      playSound = "neg1";
       positive_streak = 0;
     }
   }
@@ -184,17 +184,16 @@ function update_score(
   }
 
   // During training we don't want the score to move
-  if (state == 'training') {
+  if (state == "training") {
     new_score = initial_score;
   }
 
   // Update Textual Feedback
   select_feedbackTxt(tokenErr_tmp, score_update, dl_distance_tmp);
 
-  console.log('score update: ', score_update);
-  console.log('new score: ', new_score);
-  console.log('original_sequence.length : ', original_sequence.length);
-  console.log('dl_distance_tmp : ', dl_distance_tmp);
+  console.log("answer : ", answer);
+  console.log("original_sequence : ", original_sequence);
+  console.log("dl_distance_tmp : ", dl_distance_tmp);
 
   return {
     score: new_score,
@@ -216,56 +215,56 @@ function select_feedbackTxt(token_err_bool, score_update, dl_distance_tmp) {
   let feedbackTXT;
   if (token_err_bool) {
     feedbackTXT =
-      lan_selected === 'fr' ? 'Erreur de position' : 'Wrong position';
+      lan_selected === "fr" ? "Erreur de position" : "Wrong position";
   } else {
     switch (dl_distance_tmp) {
       case 0:
-        feedbackTXT = lan_selected === 'fr' ? 'Parfait !' : 'Flawless!';
+        feedbackTXT = lan_selected === "fr" ? "Parfait !" : "Flawless!";
         break;
 
       case 1:
         feedbackTXT =
-          lan_selected === 'fr' ? 'Incroyable !' : 'Genius! Keep it up!';
+          lan_selected === "fr" ? "Incroyable !" : "Genius! Keep it up!";
         break;
 
       case 2:
         feedbackTXT =
-          lan_selected === 'fr'
-            ? 'Génial ! Presque parfait !'
-            : 'Amazing! Almost perfect!';
+          lan_selected === "fr"
+            ? "Génial ! Presque parfait !"
+            : "Amazing! Almost perfect!";
         break;
 
       case 3:
         feedbackTXT =
-          lan_selected === 'fr'
-            ? 'Très bien !'
-            : 'Great! You’re getting there!';
+          lan_selected === "fr"
+            ? "Très bien !"
+            : "Great! You’re getting there!";
         break;
 
       case 4:
-        feedbackTXT = lan_selected === 'fr' ? 'Bravo !' : 'Well done!';
+        feedbackTXT = lan_selected === "fr" ? "Bravo !" : "Well done!";
         break;
 
       case 5:
-        feedbackTXT = lan_selected === 'fr' ? 'Presque !' : 'Almost there!';
+        feedbackTXT = lan_selected === "fr" ? "Presque !" : "Almost there!";
         break;
 
       case 6:
         feedbackTXT =
-          lan_selected === 'fr'
+          lan_selected === "fr"
             ? "Bien joué, c'était presque ça !"
-            : 'Well played, it was almost that !';
+            : "Well played, it was almost that !";
         break;
 
       case 7:
         feedbackTXT =
-          lan_selected === 'fr'
-            ? 'Pas loin ! Encore un petit effort !'
-            : 'That was close! Keep it up!';
+          lan_selected === "fr"
+            ? "Pas loin ! Encore un petit effort !"
+            : "That was close! Keep it up!";
         break;
 
       default:
-        feedbackTXT = lan_selected === 'fr' ? 'Faux.' : 'Try again!';
+        feedbackTXT = lan_selected === "fr" ? "Faux." : "Try again!";
         break;
     }
   }
@@ -282,17 +281,17 @@ function select_feedbackTxt(token_err_bool, score_update, dl_distance_tmp) {
 function visual_feedback() {
   let visual_feedback_class;
   if (tokenErr) {
-    visual_feedback_class = 'fail';
+    visual_feedback_class = "fail";
   } else {
     if (dl_distance < 3) {
       // CASE: Success
-      visual_feedback_class = 'success';
+      visual_feedback_class = "success";
     } else if (dl_distance < correct_threshold + 3) {
       // CASE: Moderate success
-      visual_feedback_class = 'moderate--failure';
+      visual_feedback_class = "moderate--failure";
     } else {
       // CASE: Fail
-      visual_feedback_class = 'fail';
+      visual_feedback_class = "fail";
     }
   }
 
@@ -313,6 +312,6 @@ function readAndPlayMp3(soundFile) {
   const audio = new Audio(soundPath);
   audio
     .play()
-    .then(() => console.log('Playing MP3 file'))
-    .catch((error) => console.error('Error playing MP3:', error));
+    .then(() => console.log("Playing MP3 file"))
+    .catch((error) => console.error("Error playing MP3:", error));
 }

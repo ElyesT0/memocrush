@@ -73,7 +73,7 @@ const correct_threshold = 5; // Defined DL-distance threshold to have a positive
 
 const SOA = 400;
 const blink = 300; //actual visual duration of the stimuli in ms
-const nb_repetition = 2; // number of times the series of sequences are presented
+const nb_repetition = 1; // number of times the series of sequences are presented
 const range_confidence = 4; // number of confidence buttons
 const set_delay = 750; //Short delay after end of presentation
 
@@ -123,71 +123,171 @@ let playSound; // Holds the sounds that needs to be played
 // ---------------------------------------------------
 // -- Sequence expressions
 //
-const dict_sequences = {
-  "Rep-2": [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2],
-  "CRep-2": [1, 2, 2, 2, 2, 1, 1, 2, 1, 1, 1, 2],
-  "Rep-3": [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3],
-  "CRep-3": [1, 2, 3, 1, 3, 2, 2, 3, 1, 2, 1, 3],
-  "Rep-4": [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4],
-  "CRep-4": [1, 2, 3, 4, 3, 2, 4, 1, 1, 4, 2, 3],
-  "Rep-Nested": [1, 1, 2, 2, 3, 3, 1, 1, 2, 2, 3, 3],
-  "CRep-Nested-Local": [1, 2, 3, 1, 3, 2, 1, 2, 3, 1, 3, 2],
-  "CRep-Nested-Global": [1, 1, 2, 2, 3, 3, 1, 1, 3, 3, 2, 2],
-  "Play-4": [1, 2, 1, 3, 1, 4, 1, 2, 1, 3, 1, 4],
-  "CPlay-4": [1, 2, 1, 3, 2, 4, 1, 2, 1, 3, 2, 4],
-  "Sub-1": [1, 2, 3, 4, 1, 2, 3, 2, 1, 2, 3, 1], // Sub-programs 1
-  "CSub-1": [1, 2, 3, 4, 1, 3, 2, 3, 1, 2, 3, 1], // Contrôle sub-programs 1
-  "Sub-2": [1, 2, 3, 4, 1, 2, 3, 5, 1, 2, 3, 6], // Sub-programs 2
-  "CSub-2": [1, 2, 3, 4, 1, 3, 2, 5, 1, 2, 3, 6], // Contrôle sub-programs 2
-  Index: [1, 2, 1, 1, 2, 2, 1, 1, 1, 2, 2, 2], // Indice i
-  CIndex: [1, 1, 1, 2, 2, 2, 1, 2, 1, 1, 2, 2], // Contrôle indice i
-  Play: [1, 1, 1, 2, 1, 1, 1, 3, 1, 1, 1, 4], // Play
-  CPlay: [1, 1, 1, 2, 1, 1, 3, 1, 1, 1, 1, 4], // Contrôle play
-  Insertion: [1, 2, 3, 1, 2, 3, 4, 1, 2, 3, 4, 5], // Insertion
-  Suppression: [1, 2, 3, 4, 5, 1, 2, 3, 4, 1, 2, 3], // Suppression (contrôle insertion)
-  "Mirror-1": [1, 2, 3, 4, 4, 3, 2, 1, 1, 2, 3, 4], // Miroir 1
-  "CMirror-1": [1, 2, 3, 4, 4, 2, 3, 1, 1, 2, 3, 4], // Contrôle Miroir 1
-  "Mirror-2": [1, 2, 3, 4, 3, 2, 1, 2, 3, 4, 3, 2, 1], // Miroir 2
-  "CMirror-2": [1, 2, 3, 4, 2, 3, 1, 2, 3, 4, 2, 3, 1], // Contrôle Miroir 2
-};
 
 const sequences = [
-  [1, 2, 1, 3, 1, 4, 1, 2, 1, 3, 1, 4], // Play 4 Tokens
-  [1, 2, 1, 3, 2, 4, 1, 2, 1, 3, 2, 4], // Contrôle Play-4 Tokens
-  [1, 2, 3, 4, 1, 2, 3, 2, 1, 2, 3, 1], // Sub-programs 1
-  [1, 2, 3, 4, 1, 3, 2, 3, 1, 2, 3, 1], // Contrôle sub-programs 1
-  [1, 2, 3, 4, 1, 2, 3, 5, 1, 2, 3, 6], // Sub-programs 2
-  [1, 2, 3, 4, 1, 3, 2, 5, 1, 2, 3, 6], // Contrôle sub-programs 2
-  [1, 2, 1, 1, 2, 2, 1, 1, 1, 2, 2, 2], // Indice i
-  [1, 1, 1, 2, 2, 2, 1, 2, 1, 1, 2, 2], // Contrôle indice i
-  [1, 1, 1, 2, 1, 1, 1, 3, 1, 1, 1, 4], // Play
-  [1, 1, 1, 2, 1, 1, 3, 1, 1, 1, 1, 4], // Contrôle play
-  [1, 2, 3, 1, 2, 3, 4, 1, 2, 3, 4, 5], // Insertion
-  [1, 2, 3, 4, 5, 1, 2, 3, 4, 1, 2, 3], // Suppression (contrôle insertion)
-  [1, 2, 3, 4, 4, 3, 2, 1, 1, 2, 3, 4], // Miroir 1
-  [1, 2, 3, 4, 4, 2, 3, 1, 1, 2, 3, 4], // Contrôle Miroir 1
-  [1, 2, 3, 4, 3, 2, 1, 4, 1, 2, 3, 4], // Miroir 2
-  [1, 2, 3, 4, 3, 1, 2, 4, 1, 2, 3, 4], // Contrôle Miroir 2
-  [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2], // token:2 ; repetition: 6
-  [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3], // token:3 ; repetition: 4
-  [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4], // token:4 ; repetition: 3
-  [1, 1, 2, 2, 3, 3, 1, 1, 2, 2, 3, 3], // token:3 ; repetition: 2levels/nested
-  [1, 2, 2, 2, 2, 1, 1, 2, 1, 1, 1, 2], // token:2 ; repetition: 6; control
-  [1, 2, 3, 1, 3, 2, 2, 3, 1, 2, 1, 3], // token:3 ; repetition: 4; control; no structure
-  [1, 2, 3, 4, 3, 2, 4, 1, 1, 4, 2, 3], // token:4 ; repetition: 3; control
-  [1, 2, 3, 1, 3, 2, 1, 2, 3, 1, 3, 2], // token:3 ; repetition: 2levels/nested; control 1 global repetition but not local
-  [1, 1, 2, 2, 3, 3, 1, 1, 3, 3, 2, 2], // token:3 ; repetition: 2levels/nested; control 2 local repetition but not global
-];
+  // +++++++++++++++++
+  //+++++ Experiment 1
+  //
+  // ----- REP2
+  // - distance between two points = 1
+  [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+  [0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1], // CREP2
 
-// const sequences = Object.values(mappedPatterns).flatMap((innerDict) =>
-//   Object.values(innerDict)
-// );
+  // - distance between two points = 2
+  [0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2],
+  [0, 2, 2, 2, 2, 0, 0, 2, 0, 0, 0, 2], // CREP2
+
+  // - distance between two points = 3
+  [0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3],
+  [0, 3, 3, 3, 3, 0, 0, 3, 0, 0, 0, 3], // CREP2
+
+  // ----- REP3
+  // Rotation cluster form
+  [0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2], // REP3
+  [0, 1, 2, 0, 2, 1, 1, 2, 0, 1, 0, 2], // CREP3
+
+  // Triangle + rotation form
+  [0, 2, 4, 0, 2, 4, 0, 2, 4, 0, 2, 4], // REP3
+  [0, 2, 4, 0, 4, 2, 2, 4, 0, 2, 0, 4], // CREP3
+
+  // 2 groups
+  [0, 5, 3, 0, 5, 3, 0, 5, 3, 0, 5, 3], // REP3
+  [0, 5, 3, 0, 3, 5, 5, 3, 0, 5, 0, 3], // CREP3
+
+  // ----- REP4
+  // Rotation +1
+  [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3], // REP4
+  [0, 1, 2, 3, 2, 1, 3, 0, 0, 3, 1, 2], // CREP4
+
+  // Zhang geometrical shape-23
+  [0, 2, 5, 3, 0, 2, 5, 3, 0, 2, 5, 3], // REP4
+  [0, 2, 5, 3, 5, 2, 3, 0, 0, 3, 2, 5], // CREP4
+
+  // Zhang geometrical shape-30
+  [0, 3, 2, 5, 0, 3, 2, 5, 0, 3, 2, 5], // REP4
+  [0, 3, 2, 5, 2, 3, 5, 0, 0, 5, 3, 2], // CREP4
+
+  // ---- REP-Nested
+  // Rotation +1
+  [0, 0, 1, 1, 2, 2, 0, 0, 1, 1, 2, 2], // REP-Nested
+  [0, 1, 2, 0, 2, 1, 0, 1, 2, 0, 2, 1], // REP-Global
+  [0, 0, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1], // REP-Local
+
+  // Triangle + rotation form
+  [0, 0, 2, 2, 4, 4, 0, 0, 2, 2, 4, 4], // REP-Nested
+  [0, 2, 4, 0, 4, 2, 0, 2, 4, 0, 4, 2], // REP-Global
+  [0, 0, 2, 2, 4, 4, 0, 0, 4, 4, 2, 2], // REP-Local
+
+  // 2 groups
+  [0, 0, 5, 5, 3, 3, 0, 0, 5, 5, 3, 3], // REP-Nested
+  [0, 5, 3, 0, 3, 5, 0, 5, 3, 0, 3, 5], // REP-Global
+  [0, 0, 5, 5, 3, 3, 0, 0, 3, 3, 5, 5], // REP-Local
+
+  // +++++++++++++++++
+  //+++++ Experiment 2
+  //
+  // ----- 4 Tokens
+  // Rotation +1 [0,1,2,3]
+  // Zhang geometrical shape-23 [0,2,5,3]
+  // Zhang geometrical shape-30 [0,3,5,2]
+
+  // ----- Play 4 Tokens
+  // Rotation +1 [0,1,2,3]
+  [0, 1, 0, 2, 0, 3, 0, 1, 0, 2, 0, 3], // Play 4 Tokens
+  [0, 1, 0, 2, 1, 3, 0, 1, 0, 2, 1, 3], // Contrôle Play-4 Tokens
+
+  // Zhang geometrical shape-23 [0,2,5,3]
+  [0, 2, 0, 5, 0, 3, 0, 2, 0, 5, 0, 3], // Play 4 Tokens
+  [0, 2, 0, 5, 2, 3, 0, 2, 0, 5, 2, 3], // Contrôle Play-4 Tokens
+
+  // Zhang geometrical shape-30 [0,3,2,5]
+  [0, 3, 0, 2, 0, 5, 0, 3, 0, 2, 0, 5], // Play 4 Tokens
+  [0, 3, 0, 2, 3, 5, 0, 3, 0, 2, 3, 5], // Contrôle Play-4 Tokens
+
+  // ----- Sub-programs 1 (6 Tokens): treat it as 3 tokens
+  // Rotation +1 [0,1,2,3]
+  [0, 1, 2, 3, 0, 1, 2, 1, 0, 1, 2, 0], // Sub-programs 1
+  [0, 1, 2, 3, 0, 2, 1, 2, 0, 1, 2, 0], // Contrôle sub-programs 1
+  // Triangle + rotation [0,2,4] + [1,3,5]
+  [0, 2, 4, 1, 0, 2, 4, 2, 0, 2, 4, 0], // Sub-programs 1
+  [0, 2, 4, 1, 0, 4, 2, 4, 0, 2, 4, 0], // Contrôle sub-programs 1
+  // Separated groups [0,5,3]+[1,2,4]
+  [0, 5, 3, 1, 0, 5, 3, 5, 0, 5, 3, 0], // Sub-programs 1
+  [0, 5, 3, 1, 0, 3, 5, 3, 0, 5, 3, 0], // Contrôle sub-programs 1
+
+  // ----- Sub-programs 2 (6 Tokens): treat it as 3 tokens
+  // Rotation +1
+  [0, 1, 2, 3, 0, 1, 2, 4, 0, 1, 2, 5], // Sub-programs 2
+  [0, 1, 2, 3, 0, 2, 1, 4, 0, 1, 2, 5], // Contrôle sub-programs 2
+  // Triangle + rotation [0,2,4] + [1,3,5]
+  [0, 2, 4, 1, 0, 2, 4, 3, 0, 2, 4, 5], // Sub-programs 2
+  [0, 2, 4, 1, 0, 4, 2, 3, 0, 2, 4, 5], // Contrôle sub-programs 2
+  // Separated groups [0,5,3]+[1,2,4]
+  [0, 5, 3, 1, 0, 5, 3, 2, 0, 5, 3, 4], // Sub-programs 2
+  [0, 5, 3, 1, 0, 3, 5, 2, 0, 5, 3, 4], // Contrôle sub-programs 2
+
+  // ----- Indice i (2tokens)
+  // - distance between two points = 1
+  [0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1], // Indice i
+  [0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1], // Contrôle indice i
+
+  // - distance between two points = 2
+  [0, 2, 0, 0, 2, 2, 0, 0, 0, 2, 2, 2], // Indice i
+  [0, 0, 0, 2, 2, 2, 0, 2, 0, 0, 2, 2], // Contrôle indice i
+  // - distance between two points = 3
+  [0, 3, 0, 0, 3, 3, 0, 0, 0, 3, 3, 3], // Indice i
+  [0, 0, 0, 3, 3, 3, 0, 3, 0, 0, 3, 3], // Contrôle indice i
+
+  // ----- Play
+  // Rotation +1 [0,1,2,3]
+  [0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 3], // Play
+  [0, 0, 0, 1, 0, 0, 2, 0, 0, 0, 0, 3], // Contrôle play
+  // Zhang geometrical shape-23 [0,2,5,3]
+  [0, 0, 0, 2, 0, 0, 0, 5, 0, 0, 0, 3], // Play
+  [0, 0, 0, 2, 0, 0, 5, 0, 0, 0, 0, 3], // Contrôle play
+  // Zhang geometrical shape-30 [0,3,2,5]
+  [0, 0, 0, 3, 0, 0, 0, 2, 0, 0, 0, 5], // Play
+  [0, 0, 0, 3, 0, 0, 2, 0, 0, 0, 0, 5], // Contrôle play
+
+  // Insertion/Suppression (5 Tokens): treat it as 3 +2
+  // -- Rotation +1
+  [0, 1, 2, 0, 1, 2, 3, 0, 1, 2, 3, 4], // Insertion
+  [0, 1, 2, 3, 4, 0, 1, 2, 3, 0, 1, 2], // Suppression (contrôle insertion)
+  // -- Triangle + rotation [0,2,4] + [1,3]
+  [0, 2, 4, 0, 2, 4, 1, 0, 2, 4, 1, 3], // Insertion
+  [0, 2, 4, 1, 3, 0, 2, 4, 1, 0, 2, 4], // Suppression (contrôle insertion)
+  // -- 2 Groups [0,5,3]+[1,4]
+  [0, 5, 3, 0, 5, 3, 1, 0, 5, 3, 1, 4], // Insertion
+  [0, 5, 3, 1, 4, 0, 5, 3, 1, 0, 5, 3], // Suppression (contrôle insertion)
+
+  // ----- Mirror 1
+  // Rotation +1 [0,1,2,3]
+  [0, 1, 2, 3, 3, 2, 1, 0, 0, 1, 2, 3], // Mirror 1
+  [0, 1, 2, 3, 3, 1, 2, 0, 0, 1, 2, 3], // Contrôle Mirror 1
+  // Zhang geometrical shape-23 [0,2,5,3]
+  [0, 2, 5, 3, 3, 5, 2, 0, 0, 2, 5, 3], // Mirror 1
+  [0, 2, 5, 3, 3, 2, 5, 0, 0, 2, 5, 3], // Contrôle Mirror 1
+  // Zhang geometrical shape-30 [0,3,2,5]
+  [0, 3, 2, 5, 5, 2, 3, 0, 0, 3, 2, 5], // Mirror 1
+  [0, 3, 2, 5, 5, 3, 2, 0, 0, 3, 2, 5], // Contrôle Mirror 1
+
+  // ----- Mirror 2
+  // Rotation +1 [0,1,2,3]
+  [0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0], // Mirror 2 [ABCD.CBA.BCD.CBA]
+  [0, 1, 2, 3, 1, 2, 0, 1, 2, 3, 1, 2, 0], // Contrôle Mirror 2
+  // Zhang geometrical shape-23 [0,2,5,3]
+  [0, 2, 5, 3, 5, 2, 0, 2, 5, 3, 5, 2, 0], // Mirror 2
+  [0, 2, 5, 3, 2, 5, 0, 2, 5, 3, 2, 5, 0], // Contrôle Mirror 2
+  // Zhang geometrical shape-30 [0,3,2,5]
+  [0, 3, 2, 5, 2, 3, 0, 3, 2, 5, 2, 3, 0], // Mirror 2
+  [0, 3, 2, 5, 3, 2, 0, 3, 2, 5, 3, 2, 0], // Contrôle Mirror 2
+];
 
 const training_sequences = [
   // only used for the training phase: use to train and calibrate experiment
-  [1, 2, 3, 4, 1, 2, 3, 4],
-  [1, 2, 3, 4, 5, 5, 4, 3, 2, 1],
-  [1, 4, 6, 2, 5, 4, 4, 3, 1, 6, 4, 1],
+  [0, 1, 2, 3, 0, 1, 2, 3],
+  [0, 1, 2, 3, 4, 4, 3, 2, 1, 0],
+  [0, 3, 5, 1, 4, 3, 3, 2, 0, 5, 3, 0],
 ];
 
 /* 
@@ -283,43 +383,36 @@ for (let i = 0; i < nb_repetition; i++) {
 
 // Keep temporal structure but randomize the starting points.
 
-var randomized_sequences = randomize_points(shuffled_sequences);
+const randomized_sequences = shuffled_sequences.map((seq) =>
+  randomizeStartingPoint(seq)
+);
 
 // We put training sequences and testing sequences with preserved structure in a same object. Used to tag sequences and to keep the original structure.
 const original_sequence_train_test = [
   ...training_sequences,
-  ...Array(1)
-    .fill([...shuffled_sequences])
-    .flat(),
+  ...shuffled_sequences,
 ];
 
 // We put training sequences and testing sequences (already randomized and shuffled) in a same object. Used to present stimuli to participants.
-const sequence_train_test = [
-  ...training_sequences,
-  ...Array(1)
-    .fill([...randomized_sequences])
-    .flat(),
-];
+const sequence_train_test = [...training_sequences, ...randomized_sequences];
 
 // ---------------------------------------------------
 // TAG GEOMETRICAL AND TEMPORAL STRUCTURE OF SEQUENCES
 //
 // -- Temporal structure
-const all_sequences_temp_tags = Array(training_sequences.length).fill(
-  "training"
-);
-
-shuffled_sequences.forEach((sequence) => {
-  for (const key in dict_sequences) {
-    const values = dict_sequences[key];
-
-    // Check if the current sequence matches values
-    if (JSON.stringify(sequence) === JSON.stringify(values)) {
-      all_sequences_temp_tags.push(key);
-      break;
+const all_sequences_temp_tags = original_sequence_train_test.map(
+  (seq_exp, i) => {
+    const key = seq_exp.join(", ");
+    const tag = sequence_tag_temporal[key];
+    if (tag === undefined) {
+      console.warn("TEMPORAL undefined at index", i, ":", key);
     }
+    return tag;
   }
-});
+);
+const all_sequences_geom_tags = original_sequence_train_test.map(
+  (seq_exp) => sequence_tag_geometry[seq_exp.join(", ")]
+);
 
 //TODO : shuffled_sequences
 
