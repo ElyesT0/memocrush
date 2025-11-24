@@ -341,10 +341,8 @@ const transition_instructions_fr =
 // --------------------------------------------------------------
 // -- Ending Text
 //
-const end_txt_fr =
-  "L'expérience est terminée. Merci d'avoir participé ! Veuillez remplir le questionnaire suivant.";
-const end_txt_eng =
-  "You successfully completed the experiment. Thank you for your efforts ! Please fill in the following survey.";
+const end_txt_fr = `L'expérience est terminée. Merci d'avoir participé ! Veuillez remplir le questionnaire suivant. [Pour les étudiants validant des crédits]: votre ID est : ${participant_id}`;
+const end_txt_eng = `You successfully completed the experiment. Thank you for your efforts ! Please fill in the following survey. [For students validating credits]: your ID is : ${participant_id}`;
 
 const next_txt_fr = "Vous avez répondu";
 const next_txt_eng = "You responded";

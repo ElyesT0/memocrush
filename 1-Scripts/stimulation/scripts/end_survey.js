@@ -3,6 +3,8 @@
 var lan_selected = sessionStorage.getItem("language-selected") || "en";
 var experiment_name = sessionStorage.getItem("experiment_name");
 let right_dimension_questions = {};
+var external_survey_link_fr = "https://forms.gle/eX4GzGowMedr2EmA8";
+var external_survey_link_en = "https://forms.gle/1SDgxG5kYMYjaibX7";
 
 // -- Retrieve Participant Data
 let participant_data = sessionStorage.getItem("participant_object");
@@ -181,10 +183,27 @@ function submitSurvey() {
 
   console.log(responses);
 
-  document.getElementById("thankYouMessage").textContent =
-    lan_selected === "fr"
-      ? "Réponses enregistrées. Merci pour votre participation!"
-      : "Your responses have been recorded. Thank you for completing the survey!";
+  // document.getElementById("thankYouMessage").textContent =
+  //   lan_selected === "fr"
+  //     ? "Réponses enregistrées. Merci pour votre participation!"
+  //     : "Your responses have been recorded. Thank you for completing the survey!";
+  if (lan_selected === "fr") {
+    thankYouMessage.innerHTML = `
+    Réponses enregistrées. Merci pour votre participation !<br>
+    Si vous souhaitez contribuer à l’étude sur la mémoire et l’apprentissage,
+    <a href="${external_survey_link_fr}" target="_blank" rel="noopener noreferrer">
+      cliquez ici
+    </a>.
+  `;
+  } else {
+    thankYouMessage.innerHTML = `
+    Your responses have been recorded. Thank you for completing the survey!<br>
+    If you are interested in contributing to the study of memory and learning,
+    <a href="${external_survey_link_en}" target="_blank" rel="noopener noreferrer">
+      click here
+    </a>.
+  `;
+  }
 
   document.getElementById("thankYouModal").style.display = "flex"; // Show modal
   document.getElementById("surveyForm").style.display = "none";
